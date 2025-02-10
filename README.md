@@ -44,3 +44,16 @@ ollama run deepseek-r1:7b
 ```
 streamlit run pdf_chat.py
 ```
+
+## The RAG chatbot using free API keys are also available for those who have free API keys store them in a .env file. 
+
+#### .env file looks like this
+
+OPENROUTER_API_KEY_DS_R1=sk-or-v1-xxxxxx
+OPENROUTER_API_KEY_DS_R1LLAMA70B=sk-or-v1-xxxxxx
+OPENROUTER_API_KEY_GEMINI_PRO_2=sk-or-v1-xxxxxxx
+OPENROUTER_API_KEY_GEMINI_FL_2=sk-or-v1-xxxxxxxxxxxxx 
+GOOGLE_GEMINI_API_KEY=xxxxxxxxxxxxxx
+GROQ_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxx
+
+OPENROUTER_BASE_URL=https://openrouter.ai/api/v1

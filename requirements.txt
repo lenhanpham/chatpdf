@@ -4,3 +4,7 @@ langchain_community
 langchain_ollama
 pypdf
 faiss-cpu
+google-generativeai
+groq
+python-dotenv 
+requests
