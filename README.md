@@ -50,10 +50,25 @@ streamlit run pdf_chat.py
 #### .env file looks like this
 
 OPENROUTER_API_KEY_DS_R1=sk-or-v1-xxxxxx
+
 OPENROUTER_API_KEY_DS_R1LLAMA70B=sk-or-v1-xxxxxx
+
 OPENROUTER_API_KEY_GEMINI_PRO_2=sk-or-v1-xxxxxxx
+
 OPENROUTER_API_KEY_GEMINI_FL_2=sk-or-v1-xxxxxxxxxxxxx 
+
 GOOGLE_GEMINI_API_KEY=xxxxxxxxxxxxxx
+
 GROQ_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxx
 
+
+
 OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
+
+### Start the chatbot
+
+```
+streamlit run pdf_chat_model_api.py
+```
+
+![image-20250210234549801](UI.png)
