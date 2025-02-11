@@ -1,9 +1,7 @@
 # PDF Chat Using Model API
 
 ## Overview
-This PDF Chatbot is a web application that allows users to upload PDF documents and ask questions about their content. Your PDF files are stored offline and totally safe. The application utilizes various AI models to generate answers based on the information extracted from the uploaded PDFs. 
-
-A chatbot using an offline model (Deepseek-r1:7b) is also available for those who would like to use offline models with their powerful PCs or Laptops.
+The PDF Chat Model API is a web application that allows users to upload PDF documents and ask questions about their content. The application utilizes various AI models to generate answers based on the information extracted from the uploaded PDFs. Your PDF files are stored offline and totally safe.
 
 ![image-20250210234549801](UI.png)
 
