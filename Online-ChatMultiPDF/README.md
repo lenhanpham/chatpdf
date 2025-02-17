@@ -7,26 +7,16 @@ The PDF Chat Model API is a web application that allows users to upload PDF docu
 
 ## Project Structure
 ```
-pdf-chat-model-api
-├── src
-│   ├── __init__.py
-│   ├── chatpdf.py
-│   ├── utils
-│   │   ├── __init__.py
-│   │   ├── file_processing.py
-│   │   ├── logging_config.py
-│   │   └── model_selection.py
-│   ├── services
-│   │   ├── __init__.py
-│   │   ├── vector_store.py
-│   │   └── answer_generation.py
-│   └── config
-│       ├── __init__.py
-│       └── settings.py
-├── .env
-├── requirements.txt
-├── README.md
-└── .gitignore
+src/
+├── services/
+│   ├── answer_generation.py  # Handles answer generation logic
+│   ├── model_handler.py      # Handles different model API interactions
+│   └── vector_store.py       # Handles vector store operations
+├── config/
+│   └── settings.py           # Centralized configuration
+├── utils/
+│   └── logging_config.py     # Logging configuration
+└── chatpdf.py               # Main application file
 ```
 
 ## Installation

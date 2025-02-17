@@ -31,7 +31,8 @@ def init_session_state():
     if "question_input" not in st.session_state:
         st.session_state.question_input = ""
     if "vector_store_manager" not in st.session_state:
-        st.session_state.vector_store_manager = VectorStoreManager()
+        with st.spinner("Initializing... This may take a few seconds."):
+            st.session_state.vector_store_manager = VectorStoreManager()
 
 def handle_file_upload(uploaded_files):
     if uploaded_files:
@@ -44,7 +45,10 @@ def handle_file_upload(uploaded_files):
                         f.write(uploaded_file.getbuffer())
                     try:
                         db = st.session_state.vector_store_manager.create_vector_store(file_path)
-                        st.session_state.processed_files[uploaded_file.name] = db
+                        st.session_state.processed_files[uploaded_file.name] = {
+                            'db': db,
+                            'path': file_path
+                        }
                         if uploaded_file.name not in st.session_state.selected_files:
                             st.session_state.selected_files.append(uploaded_file.name)
                         st.success(f"✅ {uploaded_file.name} processed successfully!")
@@ -70,7 +74,11 @@ def submit_question():
         st.session_state.question_input = ""
 
 def main():
-    init_session_state()
+    # Show a loading message while the app initializes
+    if "app_initialized" not in st.session_state:
+        with st.spinner("Starting up... Please wait."):
+            init_session_state()
+            st.session_state.app_initialized = True
     
     st.title("📄 PDF Question Answering App")
 
@@ -149,7 +157,7 @@ def main():
                 st.warning("⚠️ Please select at least one PDF file.")
             else:
                 selected_vector_stores = [
-                    st.session_state.processed_files[filename]
+                    st.session_state.processed_files[filename]['db']
                     for filename in st.session_state.selected_files
                 ]
                 combined_db = st.session_state.vector_store_manager.combine_vector_stores(selected_vector_stores)
@@ -157,19 +165,49 @@ def main():
                 if combined_db is None:
                     st.warning("⚠️ No vector stores were combined.")
                 else:
-                    related_documents = st.session_state.vector_store_manager.similarity_search(combined_db, question, k=4)
-                    context = "\n\n".join([doc.page_content for doc in related_documents])
+                    # Get balanced results from all documents
+                    k_per_doc = 4 * len(st.session_state.selected_files)
+                    related_documents = st.session_state.vector_store_manager.similarity_search(
+                        combined_db, 
+                        question, 
+                        k=k_per_doc
+                    )
+                    
+                    # Group context by file
+                    context_by_file = {}
+                    for doc in related_documents:
+                        file_name = doc.metadata.get('file_name', 'Unknown')
+                        if file_name not in context_by_file:
+                            context_by_file[file_name] = []
+                        context_by_file[file_name].append(doc.page_content)
+                    
+                    # Create structured context
+                    context_parts = []
+                    for file_name, contents in context_by_file.items():
+                        context_parts.append(f"[File: {file_name}]\n" + "\n".join(contents))
+                    
+                    context = "\n\n---\n\n".join(context_parts)
+                    
                     try:
                         answer = generate_answer(question, context, st.session_state.selected_model)
                         if answer:
                             st.session_state.chat_history[-1]["answer"] = answer
                         else:
-                            st.session_state.chat_history[-1]["answer"] = "❌ An error occurred while generating the answer."
+                            st.session_state.chat_history[-1]["answer"] = (
+                                "Failed to generate an answer. Please try again."
+                            )
                     except Exception as e:
-                        logging.error(f"Unexpected error: {e}")
-                        st.session_state.chat_history[-1]["answer"] = "❌ An unexpected error occurred."
-
+                        logging.error(f"Error in answer generation: {e}")
+                        st.session_state.chat_history[-1]["answer"] = (
+                            "An unexpected error occurred. Please try again."
+                        )
+                    
                     st.rerun()
+
+# Add caching to expensive operations
+@st.cache_resource
+def get_vector_store_manager():
+    return VectorStoreManager()
 
 if __name__ == "__main__":
     try:
@@ -177,3 +215,16 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         logging.info("\n🛑 Streamlit app interrupted. Exiting cleanly...")
         sys.exit(0)
+
+
+
+
+
+
+
+
+
+
+
+
+
