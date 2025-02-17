@@ -17,7 +17,7 @@ conda activate pdfchat
 ```
 #### Clone this deposit
 ```
-git clone 
+git clone <repository-url>
 ```
 #### cd to the repository and Install all requirement 
 ```

@@ -36,7 +36,7 @@ pdf-chat-model-api
    ```
 2. Navigate to the project directory:
    ```
-   cd pdf-chat-model-api
+   cd Online-ChatPDF
    ```
 3. Install the required dependencies:
    ```

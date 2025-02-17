@@ -26,7 +26,7 @@ src/
    ```
 2. Navigate to the project directory:
    ```
-   cd pdf-chat-model-api
+   cd Online-ChatMultiPDF
    ```
 3. Install the required dependencies:
    ```
